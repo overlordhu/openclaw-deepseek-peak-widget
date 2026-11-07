@@ -7,7 +7,7 @@
     "finance-payments"
   ],
   "uiCapabilities": [
-    "widget"
+    "panel"
   ],
   "configSchema": {
     "type": "object",
@@ -17,34 +17,10 @@
   "activation": {
     "onStartup": true
   },
-  "dashboard": {
-    "dataBindings": [
-      {
-        "id": "status",
-        "method": "deepseek-peak-widget.status",
-        "description": "Current peak/off-peak status, next change, prices, and banner."
-      }
-    ],
-    "actionVerbs": [
-      {
-        "id": "refresh",
-        "method": "deepseek-peak-widget.refresh",
-        "description": "Re-fetch the parameter file and recompute.",
-        "paramShape": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {}
-        }
-      }
-    ]
-  },
   "controlUi": {
-    "entry": "dist/control-ui/8062ab0ca295ed6e62e957baec28fef638a7548ab404c9aaba58b563d279ff6c/index.js",
+    "entry": "dist/control-ui/control-ui.js",
     "styles": [
-      "dist/control-ui/8062ab0ca295ed6e62e957baec28fef638a7548ab404c9aaba58b563d279ff6c/index.css"
+      "dist/control-ui/control-ui.css"
     ]
-  },
-  "contracts": {
-    "tools": []
   }
 }

@@ -6,10 +6,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json && openclaw plugins build",
-    "validate": "openclaw plugins validate --json",
-    "pack": "openclaw plugins pack --json",
-    "test": "node --test"
+    "build": "npm run build:ts && npm run build:ui",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:ui": "esbuild src/control-ui.ts --bundle --outdir=dist/control-ui --format=esm --platform=browser --loader:.css=css --external:openclaw/* --minify",
+    "test": "node --test dist/"
   },
   "files": [
     "dist",

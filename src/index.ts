@@ -1,5 +1,4 @@
-import { defineFeaturePlugin } from "openclaw/plugin-sdk/feature-plugin";
-import { contract } from "./contract.js";
+import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 import { ParamsRefresher } from "./params.js";
 import {
   computeSchedule,
@@ -8,21 +7,23 @@ import {
   type PriceTable,
 } from "./schedule.js";
 
+const PLUGIN_ID = "deepseek-peak-widget";
+const METHOD_STATUS = `${PLUGIN_ID}.status`;
+const METHOD_REFRESH = `${PLUGIN_ID}.refresh`;
+
 const DEFAULT_PARAMS_URL = "https://openclaw-deepseek-peak-widget.vigpal.hu/params.json";
 const REFRESH_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6h
 const REFRESH_JITTER_MS = 15 * 60 * 1000; // ±15 min
 
-export default defineFeaturePlugin({
-  contract,
+export default definePluginEntry({
+  id: PLUGIN_ID,
   name: "DeepSeek Peak/Off-Peak Widget",
   description:
     "Always-visible sidebar widget showing time remaining until DeepSeek pricing flips between off-peak (half price) and peak (2x cost).",
 
-  setup(api) {
-    const paramsUrl = DEFAULT_PARAMS_URL;
-
+  register(api) {
     const refresher = new ParamsRefresher({
-      url: paramsUrl,
+      url: DEFAULT_PARAMS_URL,
       intervalMs: REFRESH_INTERVAL_MS,
       jitterMs: REFRESH_JITTER_MS,
     });
@@ -50,6 +51,41 @@ export default defineFeaturePlugin({
       };
     }
 
+    // Read-only status query (operator.read).
+    api.registerGatewayMethod(
+      METHOD_STATUS,
+      async (request) => {
+        try {
+          request.respond(true, buildStatus(new Date()), undefined);
+        } catch (error) {
+          request.respond(false, undefined, {
+            code: "UNAVAILABLE",
+            message: String(error),
+            details: {},
+          });
+        }
+      },
+      { scope: "operator.read" },
+    );
+
+    // Refresh action (operator.write) — re-fetch param file now.
+    api.registerGatewayMethod(
+      METHOD_REFRESH,
+      async (request) => {
+        try {
+          await refresher.refreshNow();
+          request.respond(true, buildStatus(new Date()), undefined);
+        } catch (error) {
+          request.respond(false, undefined, {
+            code: "UNAVAILABLE",
+            message: String(error),
+            details: {},
+          });
+        }
+      },
+      { scope: "operator.write" },
+    );
+
     // Background refresh service (start/stop with plugin lifecycle).
     api.registerService({
       id: "deepseek-peak-widget-refresh",
@@ -60,24 +96,5 @@ export default defineFeaturePlugin({
         refresher.stop();
       },
     });
-
-    // Control UI widget descriptor (native "widget" surface).
-    api.session.controls.registerControlUiDescriptor({
-      surface: "widget",
-      id: "deepseek-peak-widget",
-      label: "DeepSeek Pricing",
-      description: "Time until DeepSeek's next peak/off-peak pricing change.",
-      requiredScopes: ["operator.read"],
-    });
-
-    return {
-      status() {
-        return buildStatus(new Date());
-      },
-      async refresh() {
-        await refresher.refreshNow();
-        return buildStatus(new Date());
-      },
-    };
   },
 });
