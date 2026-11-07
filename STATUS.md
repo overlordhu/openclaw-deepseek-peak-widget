@@ -4,7 +4,7 @@ Updated: 2026-11-07 18:20 Europe/Budapest
 
 ## State
 
-**LIVE — widget rendering in the Control UI sidebar.**
+**LIVE in the Control UI + published to ClawHub (`@overlordhu/openclaw-deepseek-peak-widget` v1.0.0).**
 
 ## Done
 

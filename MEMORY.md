@@ -66,5 +66,8 @@ with the official `openclaw plugins build`:
   (valid SSL; 75 weekday holiday dates 2026–2029 + prices + sample banner).
 - Git remote: `git@github.com:overlordhu/openclaw-deepseek-peak-widget.git`,
   SSH key `/home/openclaw/.ssh/onewebai-github` (via `core.sshCommand`).
+- **Published on ClawHub**: `@overlordhu/openclaw-deepseek-peak-widget` v1.0.0
+  (`clawhub package publish . --family code-plugin --wait`). Install hint:
+  `openclaw plugins install clawhub:@overlordhu/openclaw-deepseek-peak-widget`.
 - Build/push: `npm run build`, `npx openclaw plugins install . --force`,
   `git push origin main`.
