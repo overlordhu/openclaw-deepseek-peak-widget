@@ -16,19 +16,22 @@ at `https://openclaw-deepseek-peak-widget.vigpal.hu/params.json`.
 ## Methodology for `chinesePublicHolidays`
 
 The schedule engine already treats **weekends (Sat–Sun) as always off-peak**, so
-only **weekday** public-holiday dates need to be listed. Days inside a holiday
-"rest period" that fall on a weekend are already handled by the weekend rule.
+only **weekday** public-holiday dates need to be listed — the weekdays that fall
+inside each official holiday rest period. The list runs **2026–2029**.
 
-The 2026 list below was derived from the official State Council holiday calendar
-(published Nov 4, 2025), keeping only Mon–Fri holiday dates:
+Rest-period date sources and their accuracy status:
 
-- New Year's Day: Jan 1 (Thu), Jan 2 (Fri)
-- Spring Festival: Feb 16–20 (Mon–Fri), Feb 23 (Mon)
-- Qingming: Apr 6 (Mon)
-- Labour Day: May 1 (Fri), May 4 (Mon), May 5 (Tue)
-- Dragon Boat: Jun 19 (Fri)
-- Mid-Autumn: Sep 25 (Fri)
-- National Day: Oct 1 (Thu), Oct 2 (Fri), Oct 5 (Mon), Oct 6 (Tue)
+- **2026** — official State Council calendar (published 2025-11-04).
+- **2027** — official State Council calendar (published ~Nov 2026).
+- **2028** — expected/projected (State Council not yet published; lunar-derived).
+- **2029** — projected (lunar-derived; State Council not yet published).
+
+> Years marked "projected" may shift by ±1 day when the State Council makes the
+> official make-up-workday adjustments. Re-verify each year when the official
+> calendar is published (usually Nov/Dec of the preceding year) and update this
+> file.
+
+Per-year weekday count: 2026 = 19, 2027 = 18, 2028 = 18, 2029 = 20 (75 total).
 
 ## Maintenance
 
