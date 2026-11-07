@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json && openclaw plugins build",
-    "test": "node --test dist/"
+    "test": "tsc -p tsconfig.test.json && node --test dist-test/"
   },
   "files": [
     "dist",

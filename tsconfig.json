@@ -11,5 +11,11 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/control-ui.ts",
+    "src/assets.generated.ts",
+    "src/css.d.ts"
   ]
 }
