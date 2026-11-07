@@ -1,10 +1,10 @@
 # STATUS.md — deepseek-peak-widget
 
-Updated: 2026-11-07 17:35 Europe/Budapest
+Updated: 2026-11-07 18:20 Europe/Budapest
 
 ## State
 
-**Code complete and locally verified. Blocked on OverLord for live install.**
+**LIVE — widget rendering in the Control UI sidebar.**
 
 ## Done
 
@@ -12,32 +12,32 @@ Updated: 2026-11-07 17:35 Europe/Budapest
 - Standalone git repo (dedicated key, joined remote history).
 - Schedule engine (peak windows + Chinese-holiday carve-out) — 15 tests pass.
 - Param-file loader with 6h±15min jittered refresh + silent last-good fallback.
-- Feature-plugin architecture: `status` (query/operator.read) and `refresh`
-  (action/operator.write) operations + widget descriptor + background service.
-- Native widget UI: whale + OneWeb logos, labeled `h`/`m` countdown, status dot,
-  both-model price table, banner, light/dark via theme tokens.
-- `openclaw plugins build` + `validate` → `valid: true`, no errors.
-- Backend smoke-tested end-to-end (correct payload, services/actions/descriptor).
-- `params.json` (2026 Chinese holidays + prices + sample banner) + methodology.
+- **Final architecture: native feature plugin** (`defineFeaturePlugin` +
+  `defineFeatureContract`) with `registerNavigation` + `registerPage` (sidebar
+  tab → native page), built via `openclaw plugins build` (content-hash controlUi).
+- Widget UI: whale + OneWeb logos (linked to oneweb.hu), labeled h/m countdown,
+  status dot, both-model price table, banner, light/dark via theme tokens.
+- `params.json` (2026–2029 Chinese holidays + prices + sample banner) deployed to
+  `openclaw-deepseek-peak-widget.vigpal.hu` (valid SSL).
+- Custom plugin UI lab enabled (`gateway.controlUi.experimental.customPlugins=true`).
+- **Installed + activated + rendering** in the live Control UI (OverLord confirmed).
 
-## Blocked on OverLord
+## Key architectural lesson (recorded for future)
 
-1. **Live install** — needs `gateway.controlUi.experimental.customPlugins` Labs
-   setting enabled + connected Control UI to verify rendering.
-2. **Deploy params.json** to `openclaw-deepseek-peak-widget.vigpal.hu` (hosting
-   credentials).
-3. **Push to GitHub** (`git@github.com:overlordhu/openclaw-deepseek-peak-widget.git`)
-   — awaiting OverLord's go (I never push without a command).
+- Dashboard widgets need `registerGatewayMethod` + `definePluginEntry`; but the
+  `openclaw plugins build` CLI (which produces the loadable content-hash
+  `controlUi` bundle) requires `defineFeaturePlugin`/`defineToolPlugin` tool/feature
+  metadata. A native **sidebar page** uses `defineFeaturePlugin` + `registerNavigation`
+  + `registerPage` + `createFeatureClient` — the fully-supported path.
 
-## Next steps (when OverLord is ready)
+## Remaining (optional/polish)
 
-1. Enable Custom plugin UI lab; `openclaw plugins install .`; reload; verify render.
-2. Deploy `params.json`; confirm the dot turns green on first successful fetch.
-3. Test failure path (dot → red while offline, keeps last good).
-4. Commit + push.
+- None blocking. Possible follow-ups: refresh the projected 2028/2029 Chinese
+  holidays when official calendars publish; banner verification on the live params
+  fetch (green dot).
 
 ## Notes
 
-- Feature plugins expose operations as **session actions**; the manifest's
-  `dashboard.dataBindings[].method` / `actionVerbs[].method` use
-  `<pluginId>.<operation>` naming (`deepseek-peak-widget.status` / `.refresh`).
+- Installed copy lives at `/home/openclaw/.openclaw/extensions/deepseek-peak-widget/`.
+- The local `node_modules/openclaw` dev-dependency caused a peer-link conflict the
+  installer auto-repaired — keep `openclaw` in devDependencies only.
