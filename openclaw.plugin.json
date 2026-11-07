@@ -1,13 +1,14 @@
 {
   "id": "deepseek-peak-widget",
   "name": "DeepSeek Peak/Off-Peak Widget",
-  "description": "Always-visible sidebar widget showing time remaining until DeepSeek pricing flips between off-peak (half price) and peak (2x cost).",
+  "description": "Always-visible sidebar widget showing DeepSeek peak/off-peak pricing.",
   "version": "0.1.0",
   "categories": [
     "finance-payments"
   ],
   "uiCapabilities": [
-    "panel"
+    "page",
+    "navigation"
   ],
   "configSchema": {
     "type": "object",
@@ -18,9 +19,12 @@
     "onStartup": true
   },
   "controlUi": {
-    "entry": "dist/control-ui/control-ui.js",
+    "entry": "dist/control-ui/27fed249b407f1c784eafa37473cc8e5ea137927fbdb804763fbcb695bd7fb22/index.js",
     "styles": [
-      "dist/control-ui/control-ui.css"
+      "dist/control-ui/27fed249b407f1c784eafa37473cc8e5ea137927fbdb804763fbcb695bd7fb22/index.css"
     ]
+  },
+  "contracts": {
+    "tools": []
   }
 }

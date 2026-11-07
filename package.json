@@ -6,9 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "npm run build:ts && npm run build:ui",
-    "build:ts": "tsc -p tsconfig.json",
-    "build:ui": "esbuild src/control-ui.ts --bundle --outdir=dist/control-ui --format=esm --platform=browser --loader:.css=css --external:openclaw/* --minify",
+    "build": "tsc -p tsconfig.json && openclaw plugins build",
     "test": "node --test dist/"
   },
   "files": [
@@ -19,6 +17,9 @@
   ],
   "peerDependencies": {
     "openclaw": ">=2026.11.1"
+  },
+  "dependencies": {
+    "typebox": "^1.3.17"
   },
   "devDependencies": {
     "openclaw": "latest",

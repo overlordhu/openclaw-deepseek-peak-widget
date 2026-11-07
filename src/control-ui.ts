@@ -1,8 +1,8 @@
 import { defineControlUiPlugin } from "openclaw/plugin-sdk/control-ui";
+import { createFeatureClient } from "openclaw/plugin-sdk/feature-contract";
+import { contract } from "./contract.js";
 import { WHALE_LOGO, ONEWEB_LOGO } from "./assets.generated.js";
 import "./control-ui.css";
-
-const METHOD_STATUS = "deepseek-peak-widget.status";
 
 interface StatusPayload {
   state: "peak" | "off-peak";
@@ -44,7 +44,14 @@ function fmtClock(iso: string): string {
 export default defineControlUiPlugin({
   id: "deepseek-peak-widget",
   activate(host) {
-    host.ui.registerPanel({
+    const feature = createFeatureClient(contract, host);
+    host.ui.registerNavigation({
+      id: "deepseek-peak-widget",
+      label: "DeepSeek Pricing",
+      page: { id: "deepseek-peak-widget" },
+      icon: "chart",
+    });
+    host.ui.registerPage({
       id: "deepseek-peak-widget",
       label: "DeepSeek Pricing",
       mount(container, context) {
@@ -213,7 +220,7 @@ export default defineControlUiPlugin({
 
         async function load(signal: AbortSignal): Promise<void> {
           try {
-            const payload = await host.request<StatusPayload>(METHOD_STATUS);
+            const payload = await feature.invoke("status", {});
             if (!disposed && !signal.aborted) render(payload);
           } catch {
             // Show a stable offline placeholder rather than crashing.
