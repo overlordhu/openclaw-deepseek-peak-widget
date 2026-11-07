@@ -1,6 +1,6 @@
 {
   "name": "@overlordhu/openclaw-deepseek-peak-widget",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Always-visible sidebar widget for DeepSeek peak/off-peak pricing.",
   "author": "OverLord",
   "license": "MIT",

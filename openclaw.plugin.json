@@ -2,7 +2,7 @@
   "id": "deepseek-peak-widget",
   "name": "DeepSeek Peak/Off-Peak Widget",
   "description": "Always-visible sidebar widget showing DeepSeek peak/off-peak pricing.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "categories": [
     "finance-payments"
   ],
