@@ -1,32 +1,43 @@
 # STATUS.md — deepseek-peak-widget
 
-Updated: 2026-11-07 17:15 Europe/Budapest
+Updated: 2026-11-07 17:35 Europe/Budapest
 
 ## State
 
-**Design complete; implementation starting.** Step 0 (repo setup) done. Step 1
-(SDK spike) in progress.
+**Code complete and locally verified. Blocked on OverLord for live install.**
 
 ## Done
 
-- Design spec (`DESIGN.md`), README (`README.md`), logo assets (transparent PNGs).
-- Standalone git repo set up at `projects/deepseek-peak-widget/` (remote
-  `origin` = github URL, dedicated `onewebai-github` key via `core.sshCommand`).
-- History joined: remote "Initial commit" (LICENSE + stub README) merged in.
+- Design spec + README + logo assets (transparent PNGs).
+- Standalone git repo (dedicated key, joined remote history).
+- Schedule engine (peak windows + Chinese-holiday carve-out) — 15 tests pass.
+- Param-file loader with 6h±15min jittered refresh + silent last-good fallback.
+- Feature-plugin architecture: `status` (query/operator.read) and `refresh`
+  (action/operator.write) operations + widget descriptor + background service.
+- Native widget UI: whale + OneWeb logos, labeled `h`/`m` countdown, status dot,
+  both-model price table, banner, light/dark via theme tokens.
+- `openclaw plugins build` + `validate` → `valid: true`, no errors.
+- Backend smoke-tested end-to-end (correct payload, services/actions/descriptor).
+- `params.json` (2026 Chinese holidays + prices + sample banner) + methodology.
 
-## Open
+## Blocked on OverLord
 
-- Step 1: SDK spike — confirm `api.session.controls.registerControlUiDescriptor`
-  + `registerWidget` signatures, and backend `fetch` availability in Gateway.
-- Steps 2–10 pending.
+1. **Live install** — needs `gateway.controlUi.experimental.customPlugins` Labs
+   setting enabled + connected Control UI to verify rendering.
+2. **Deploy params.json** to `openclaw-deepseek-peak-widget.vigpal.hu` (hosting
+   credentials).
+3. **Push to GitHub** (`git@github.com:overlordhu/openclaw-deepseek-peak-widget.git`)
+   — awaiting OverLord's go (I never push without a command).
 
-## Next steps
+## Next steps (when OverLord is ready)
 
-1. Complete Step 1 spike (verify SDK contracts).
-2. Step 2: scaffold plugin (manifest + package.json).
-3. Steps 3–10 as planned.
+1. Enable Custom plugin UI lab; `openclaw plugins install .`; reload; verify render.
+2. Deploy `params.json`; confirm the dot turns green on first successful fetch.
+3. Test failure path (dot → red while offline, keeps last good).
+4. Commit + push.
 
 ## Notes
 
-- The auto-learned skill `vectorize-brand-logo` was updated by background review
-  during this design phase (pixel-PNG route + square-canvas convention). No action.
+- Feature plugins expose operations as **session actions**; the manifest's
+  `dashboard.dataBindings[].method` / `actionVerbs[].method` use
+  `<pluginId>.<operation>` naming (`deepseek-peak-widget.status` / `.refresh`).

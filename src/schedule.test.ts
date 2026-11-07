@@ -88,3 +88,11 @@ test("parseDateUtc validates", () => {
   assert.throws(() => parseDateUtc("bad"));
   assert.throws(() => parseDateUtc("2026-02-30"));
 });
+
+test("holiday carve-out integration: Spring Festival weekday", () => {
+  const holidays = new Set(["2026-02-16", "2026-02-17"]);
+  // Feb 16 02:00 UTC: Monday peak window, but holiday -> off-peak.
+  assert.equal(isPeak(utc(2026, 2, 16, 2, 0), holidays), false);
+  // Feb 9 02:00 UTC: Monday non-holiday -> peak.
+  assert.equal(isPeak(utc(2026, 2, 9, 2, 0), holidays), true);
+});
