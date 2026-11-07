@@ -1,0 +1,40 @@
+{
+  "name": "openclaw-plugin-deepseek-peak-widget",
+  "version": "0.1.0",
+  "description": "Always-visible sidebar widget for DeepSeek peak/off-peak pricing.",
+  "author": "OverLord",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && openclaw plugins build",
+    "validate": "openclaw plugins validate --json",
+    "pack": "openclaw plugins pack --json",
+    "test": "node --test"
+  },
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md",
+    "assets"
+  ],
+  "peerDependencies": {
+    "openclaw": ">=2026.11.1"
+  },
+  "devDependencies": {
+    "openclaw": "latest",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  },
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "controlUi": "./src/control-ui.ts",
+    "compat": {
+      "pluginApi": ">=2026.11.1"
+    },
+    "build": {
+      "openclawVersion": "2026.11.1"
+    }
+  }
+}
