@@ -1,9 +1,8 @@
 import { defineControlUiPlugin } from "openclaw/plugin-sdk/control-ui";
+import { createFeatureClient } from "openclaw/plugin-sdk/feature-contract";
+import { contract } from "./contract.js";
 import { WHALE_LOGO, ONEWEB_LOGO } from "./assets.generated.js";
 import "./control-ui.css";
-
-const METHOD_STATUS = "deepseek-peak-widget.status";
-const METHOD_REFRESH = "deepseek-peak-widget.refresh";
 
 interface StatusPayload {
   state: "peak" | "off-peak";
@@ -24,13 +23,10 @@ function money(n: number): string {
   return "$" + n.toFixed(2);
 }
 
-function fmtCountdown(ms: number): string {
+function fmtCountdown(ms: number): { h: number; m: number } {
   const totalMin = Math.floor(ms / 60000);
-  if (totalMin < 0) return "00:00";
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  const pad = (x: number) => String(x).padStart(2, "0");
-  return `${pad(h)}:${pad(m)}`;
+  if (totalMin < 0) return { h: 0, m: 0 };
+  return { h: Math.floor(totalMin / 60), m: totalMin % 60 };
 }
 
 function fmtLocalTime(iso: string): string {
@@ -48,6 +44,7 @@ function fmtClock(iso: string): string {
 export default defineControlUiPlugin({
   id: "deepseek-peak-widget",
   activate(host) {
+    const feature = createFeatureClient(contract, host);
     host.ui.registerWidget({
       id: "deepseek-peak-widget",
       label: "DeepSeek Pricing",
@@ -135,8 +132,20 @@ export default defineControlUiPlugin({
           pill.textContent = payload.label;
           pill.classList.toggle("dspw-good", !isPeak);
           pill.classList.toggle("dspw-bad", isPeak);
-          // Countdown
-          count.textContent = fmtCountdown(payload.msUntilNextChange);
+          // Countdown (labeled hours + minutes)
+          const cd = fmtCountdown(payload.msUntilNextChange);
+          count.replaceChildren();
+          const spanH = document.createElement("span");
+          spanH.textContent = String(cd.h);
+          const unitH = document.createElement("span");
+          unitH.className = "dspw-unit";
+          unitH.textContent = "h";
+          const spanM = document.createElement("span");
+          spanM.textContent = String(cd.m).padStart(2, "0");
+          const unitM = document.createElement("span");
+          unitM.className = "dspw-unit";
+          unitM.textContent = "m";
+          count.append(spanH, unitH, document.createTextNode(" "), spanM, unitM);
           count.classList.toggle("dspw-good", !isPeak);
           count.classList.toggle("dspw-bad", isPeak);
           // Context
@@ -198,13 +207,13 @@ export default defineControlUiPlugin({
 
         async function load(signal: AbortSignal): Promise<void> {
           try {
-            const payload = await host.request<StatusPayload>(METHOD_STATUS);
+            const payload = await feature.invoke("status", {});
             if (!disposed && !signal.aborted) render(payload);
           } catch {
             // Show a stable offline placeholder rather than crashing.
             if (!disposed && !signal.aborted) {
               pill.textContent = "Unavailable";
-              count.textContent = "--:--";
+              count.textContent = "--h --m";
               count.className = "dspw-count dspw-muted";
               dot.classList.add("dspw-dot-red");
             }

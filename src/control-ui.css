@@ -96,6 +96,12 @@
 .dspw-count.dspw-good { color: var(--dspw-good); }
 .dspw-count.dspw-bad { color: var(--dspw-bad); }
 .dspw-count.dspw-muted { color: var(--muted); }
+.dspw-unit {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 1px;
+}
 .dspw-context {
   font-size: 11px;
   color: var(--muted);

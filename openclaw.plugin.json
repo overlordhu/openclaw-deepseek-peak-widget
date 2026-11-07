@@ -3,18 +3,16 @@
   "name": "DeepSeek Peak/Off-Peak Widget",
   "description": "Always-visible sidebar widget showing time remaining until DeepSeek pricing flips between off-peak (half price) and peak (2x cost).",
   "version": "0.1.0",
-  "categories": ["finance-payments"],
-  "uiCapabilities": ["widget"],
+  "categories": [
+    "finance-payments"
+  ],
+  "uiCapabilities": [
+    "widget"
+  ],
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
-    "properties": {
-      "paramsUrl": {
-        "type": "string",
-        "description": "URL of the parameter file (Chinese holidays, prices, banner).",
-        "default": "https://openclaw-deepseek-peak-widget.vigpal.hu/params.json"
-      }
-    }
+    "properties": {}
   },
   "activation": {
     "onStartup": true
@@ -39,5 +37,14 @@
         }
       }
     ]
+  },
+  "controlUi": {
+    "entry": "dist/control-ui/c8602799691fef3d1f77d2fc4b102b6733f670753317e4215b22fff2049b9d00/index.js",
+    "styles": [
+      "dist/control-ui/c8602799691fef3d1f77d2fc4b102b6733f670753317e4215b22fff2049b9d00/index.css"
+    ]
+  },
+  "contracts": {
+    "tools": []
   }
 }
