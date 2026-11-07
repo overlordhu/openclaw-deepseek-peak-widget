@@ -116,11 +116,18 @@ export default defineControlUiPlugin({
         const foot = document.createElement("div");
         foot.className = "dspw-foot";
         const footText = document.createElement("span");
+        const owLink = document.createElement("a");
+        owLink.href = "https://oneweb.hu";
+        owLink.target = "_blank";
+        owLink.rel = "noopener noreferrer";
+        owLink.className = "dspw-owlink";
+        owLink.title = "OneWeb";
         const ow = document.createElement("img");
         ow.className = "dspw-ow";
         ow.src = ONEWEB_LOGO;
         ow.alt = "OneWeb";
-        foot.append(footText, ow);
+        owLink.append(ow);
+        foot.append(footText, owLink);
 
         root.append(head, sep1, status, contextLine, sep2, table, banner, foot);
         container.append(root);
